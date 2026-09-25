@@ -1,75 +1,171 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite + Java Sprint Boot + MySQL
+# Employee Management App 🧑‍💻
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack demo project built to practice integrating a **React** frontend with a **Spring Boot** backend and a **MySQL** database — a simple CRUD app for managing employees.
 
-Currently, two official plugins are available:
+This is a personal/pet project, not intended for production use. The goal is to demonstrate a complete full-stack workflow: REST API design, database persistence, and a connected frontend consuming the API.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🛠 Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Frontend**
+- React
+- Tailwind CSS
+- Axios / Fetch (API calls)
 
-## Expanding the ESLint configuration
+**Backend**
+- Java 25+
+- Spring Boot
+- Spring Data JPA
+- Spring Web (REST Controllers)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Database**
+- MySQL
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## ✨ Features
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- View a list of employees (ID, first name, last name, email)
+- Add a new employee
+- Edit an existing employee
+- Delete an employee
+- REST API consumed by the React frontend
+- Data persisted in MySQL via JPA/Hibernate
+
+---
+
+## 📁 Project Structure
 
 ```
+employee-management-app/
+├── backend/                # Spring Boot application
+│   ├── src/main/java/...   # Controllers, Services, Repositories, Entities
+│   ├── src/main/resources/
+│   │   └── application.properties
+│   └── pom.xml
+│
+├── frontend/                # React application
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── App.jsx
+│   └── package.json
+│
+└── README.md
+```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## ✅ Prerequisites
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Make sure you have installed:
+
+- [Java JDK 17+](https://www.oracle.com/java/technologies/downloads/)
+- [Node.js](https://nodejs.org/) (v18+ recommended) and npm
+- [MySQL](https://dev.mysql.com/downloads/) (v8+ recommended)
+- Maven (or use the included `mvnw` wrapper)
+
+---
+
+## 🗄️ Database Setup
+
+1. Start your MySQL server.
+2. Create the database:
+
+```sql
+CREATE DATABASE employee_management;
+```
+
+3. Update the backend's `src/main/resources/application.properties` with your MySQL credentials:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/employee_management
+spring.datasource.username=root
+spring.datasource.password=your_password
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+```
+
+> With `ddl-auto=update`, Hibernate will automatically create/update the `employee` table on startup.
+
+---
+
+## 🚀 Running the Backend (Spring Boot)
+
+```bash
+cd backend
+
+# Using Maven wrapper
+./mvnw spring-boot:run
+
+# Or with a global Maven install
+mvn spring-boot:run
+```
+
+By default, the API will run on:
 
 ```
+http://localhost:8080
+```
+
+### Sample REST Endpoints
+
+| Method | Endpoint                  | Description            |
+|--------|----------------------------|-------------------------|
+| GET    | `/api/employees`          | Get all employees      |
+| GET    | `/api/employees/{id}`     | Get employee by ID     |
+| POST   | `/api/employees`          | Create a new employee  |
+| PUT    | `/api/employees/{id}`     | Update an employee     |
+| DELETE | `/api/employees/{id}`     | Delete an employee     |
+
+---
+
+## 💻 Running the Frontend (React)
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+By default, the app will run on:
+
+```
+http://localhost:3000
+```
+
+Make sure the frontend's API base URL points to your backend, e.g. in a `.env` file:
+
+```
+REACT_APP_API_URL=http://localhost:8080/api
+```
+
+---
+
+## 🧪 Example Employee JSON
+
+```json
+{
+  "id": 1,
+  "firstName": "Houston",
+  "lastName": "Salgado",
+  "email": "houston@test.com"
+}
+```
+
+---
+
+## 📌 Notes
+
+- This project was built as a learning exercise to connect the full stack: React ↔ Spring Boot ↔ MySQL.
+- Feel free to fork and extend it — some ideas: authentication, pagination, search/filter, form validation, Docker Compose setup.
+
+---
+
+## 📄 License
+
+This project is for educational/demo purposes and is free to use and modify.
